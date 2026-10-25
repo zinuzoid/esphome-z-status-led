@@ -25,10 +25,9 @@ void ZStatusLED::loop() {
   const uint32_t now = millis();
   const uint32_t app_state = App.get_app_state();
 
+  // Warnings are ignored on purpose: they fire for routine things like no API client being connected.
   if ((app_state & STATUS_LED_ERROR) != 0u) {
     this->write_(now % 250u < 150u);
-  } else if ((app_state & STATUS_LED_WARNING) != 0u) {
-    this->write_(now % 1500u < 250u);
   } else {
     this->write_(this->heartbeat_state_(now));
   }

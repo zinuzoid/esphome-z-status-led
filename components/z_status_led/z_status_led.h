@@ -6,8 +6,8 @@
 namespace esphome {
 namespace z_status_led {
 
-// Same as ESPHome's status_led (fast blink on error, slow blink on warning),
-// but emits a short "heartbeat" blink pattern every interval when healthy.
+// Like ESPHome's status_led (fast blink on error), but ignores warnings and
+// emits a short "heartbeat" blink pattern every interval otherwise.
 class ZStatusLED : public Component {
  public:
   explicit ZStatusLED(GPIOPin *pin) : pin_(pin) {}

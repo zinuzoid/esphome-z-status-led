@@ -9,7 +9,7 @@ A drop-in alternative to ESPHome's [`status_led`](https://esphome.io/components/
 | Device state | LED behaviour |
 |---|---|
 | Error | Fast blink (same as `status_led`) |
-| Warning | Slow blink (same as `status_led`) |
+| Warning | Ignored — treated as OK (warnings fire for routine things like no API client connected) |
 | OK | Heartbeat: `count` short blinks every `interval` |
 
 ### Usage

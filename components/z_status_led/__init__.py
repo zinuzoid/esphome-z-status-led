@@ -39,11 +39,18 @@ HEARTBEAT_SCHEMA = cv.All(
     _validate_heartbeat,
 )
 
+
+def heartbeat_schema(value):
+    # `heartbeat: true` uses the defaults, `heartbeat: false` keeps the LED off when healthy.
+    if not isinstance(value, dict):
+        value = {} if cv.boolean(value) else {CONF_COUNT: 0}
+    return HEARTBEAT_SCHEMA(value)
+
 CONFIG_SCHEMA = cv.Schema(
     {
         cv.GenerateID(): cv.declare_id(ZStatusLED),
         cv.Required(CONF_PIN): pins.gpio_output_pin_schema,
-        cv.Optional(CONF_HEARTBEAT, default={}): HEARTBEAT_SCHEMA,
+        cv.Optional(CONF_HEARTBEAT, default={}): heartbeat_schema,
     }
 ).extend(cv.COMPONENT_SCHEMA)
 

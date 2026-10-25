@@ -28,7 +28,7 @@ class ZStatusLED : public Component {
   void write_(bool state);
 
   GPIOPin *pin_;
-  uint32_t heartbeat_interval_{60000};
+  uint32_t heartbeat_interval_{2000};
   uint32_t heartbeat_on_length_{100};
   uint32_t heartbeat_off_length_{100};
   uint8_t heartbeat_count_{2};

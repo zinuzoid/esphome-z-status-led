@@ -30,7 +30,7 @@ def _validate_heartbeat(config):
 HEARTBEAT_SCHEMA = cv.All(
     cv.Schema(
         {
-            cv.Optional(CONF_INTERVAL, default="60s"): cv.positive_time_period_milliseconds,
+            cv.Optional(CONF_INTERVAL, default="2s"): cv.positive_time_period_milliseconds,
             cv.Optional(CONF_ON_LENGTH, default="100ms"): cv.positive_time_period_milliseconds,
             cv.Optional(CONF_OFF_LENGTH, default="100ms"): cv.positive_time_period_milliseconds,
             cv.Optional(CONF_COUNT, default=2): cv.int_range(min=0, max=10),

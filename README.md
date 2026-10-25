@@ -29,7 +29,7 @@ z_status_led:
 
 - **pin** (**Required**, [Pin Schema](https://esphome.io/guides/configuration-types/#pin-schema)): The LED pin. Supports `inverted: true`.
 - **heartbeat** (*Optional*):
-  - **interval** (*Optional*, Time): How often the heartbeat fires. Default `60s`.
+  - **interval** (*Optional*, Time): How often the heartbeat fires. Default `2s`.
   - **on_length** (*Optional*, Time): How long each blink is on. Default `100ms`.
   - **off_length** (*Optional*, Time): Gap after each blink. Default `100ms`.
   - **count** (*Optional*, int 0–10): Blinks per heartbeat. Default `2`. `0` keeps the LED off when healthy (like `status_led`).

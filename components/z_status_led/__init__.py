@@ -1,7 +1,7 @@
 import esphome.codegen as cg
 import esphome.config_validation as cv
 from esphome import pins
-from esphome.const import CONF_ID, CONF_INTERVAL, CONF_PIN
+from esphome.const import CONF_DURATION, CONF_ID, CONF_INTERVAL, CONF_PIN
 from esphome.core import CoroPriority, coroutine_with_priority
 
 CODEOWNERS = ["@zinuzoid"]
@@ -34,6 +34,7 @@ HEARTBEAT_SCHEMA = cv.All(
             cv.Optional(CONF_ON_LENGTH, default="100ms"): cv.positive_time_period_milliseconds,
             cv.Optional(CONF_OFF_LENGTH, default="100ms"): cv.positive_time_period_milliseconds,
             cv.Optional(CONF_COUNT, default=2): cv.int_range(min=0, max=10),
+            cv.Optional(CONF_DURATION): cv.positive_time_period_milliseconds,
         }
     ),
     _validate_heartbeat,
@@ -67,3 +68,5 @@ async def to_code(config):
     cg.add(var.set_heartbeat_on_length(heartbeat[CONF_ON_LENGTH]))
     cg.add(var.set_heartbeat_off_length(heartbeat[CONF_OFF_LENGTH]))
     cg.add(var.set_heartbeat_count(heartbeat[CONF_COUNT]))
+    if CONF_DURATION in heartbeat:
+        cg.add(var.set_heartbeat_duration(heartbeat[CONF_DURATION]))

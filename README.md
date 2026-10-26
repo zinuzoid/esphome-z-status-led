@@ -33,5 +33,6 @@ z_status_led:
   - **on_length** (*Optional*, Time): How long each blink is on. Default `100ms`.
   - **off_length** (*Optional*, Time): Gap after each blink. Default `100ms`.
   - **count** (*Optional*, int 0–10): Blinks per heartbeat. Default `2`. `0` keeps the LED off when healthy (like `status_led`).
+  - **duration** (*Optional*, Time): Only heartbeat for this long after boot (e.g. `1m`), then keep the LED off while healthy. Errors still blink. Default: forever.
 
 Don't use `z_status_led` and `status_led` on the same pin.

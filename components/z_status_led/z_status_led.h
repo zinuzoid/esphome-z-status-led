@@ -16,6 +16,8 @@ class ZStatusLED : public Component {
   void set_heartbeat_on_length(uint32_t length) { this->heartbeat_on_length_ = length; }
   void set_heartbeat_off_length(uint32_t length) { this->heartbeat_off_length_ = length; }
   void set_heartbeat_count(uint8_t count) { this->heartbeat_count_ = count; }
+  // Only heartbeat for this long after boot; 0 means forever.
+  void set_heartbeat_duration(uint32_t duration) { this->heartbeat_duration_ = duration; }
 
   // Called from the generated main() before App.setup() so the pin is driven during early boot.
   void pre_setup();
@@ -32,6 +34,8 @@ class ZStatusLED : public Component {
   uint32_t heartbeat_on_length_{100};
   uint32_t heartbeat_off_length_{100};
   uint8_t heartbeat_count_{2};
+  uint32_t heartbeat_duration_{0};
+  bool heartbeat_expired_{false};
   bool state_{false};
 };
 

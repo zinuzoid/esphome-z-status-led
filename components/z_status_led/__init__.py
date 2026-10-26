@@ -1,7 +1,7 @@
 import esphome.codegen as cg
 import esphome.config_validation as cv
 from esphome import pins
-from esphome.const import CONF_ID, CONF_INTERVAL, CONF_PIN
+from esphome.const import CONF_ID, CONF_INTERVAL, CONF_INVERTED, CONF_NUMBER, CONF_PIN
 from esphome.core import CoroPriority, coroutine_with_priority
 
 CODEOWNERS = ["@zinuzoid"]
@@ -46,13 +46,34 @@ def heartbeat_schema(value):
         value = {}
     return HEARTBEAT_SCHEMA(value)
 
-CONFIG_SCHEMA = cv.Schema(
-    {
-        cv.GenerateID(): cv.declare_id(ZStatusLED),
-        cv.Required(CONF_PIN): pins.gpio_output_pin_schema,
-        cv.Optional(CONF_HEARTBEAT, default={}): heartbeat_schema,
-    }
-).extend(cv.COMPONENT_SCHEMA)
+
+def _merge_inverted(config):
+    # Top-level `inverted:` is shorthand for the pin's `inverted:`.
+    if not isinstance(config, dict) or CONF_INVERTED not in config:
+        return config
+    config = dict(config)
+    inverted = cv.boolean(config.pop(CONF_INVERTED))
+    pin = config.get(CONF_PIN)
+    if pin is None:
+        return config
+    pin = dict(pin) if isinstance(pin, dict) else {CONF_NUMBER: pin}
+    if CONF_INVERTED in pin and cv.boolean(pin[CONF_INVERTED]) != inverted:
+        raise cv.Invalid("`inverted` conflicts with the pin's `inverted`")
+    pin[CONF_INVERTED] = inverted
+    config[CONF_PIN] = pin
+    return config
+
+
+CONFIG_SCHEMA = cv.All(
+    _merge_inverted,
+    cv.Schema(
+        {
+            cv.GenerateID(): cv.declare_id(ZStatusLED),
+            cv.Required(CONF_PIN): pins.gpio_output_pin_schema,
+            cv.Optional(CONF_HEARTBEAT, default={}): heartbeat_schema,
+        }
+    ).extend(cv.COMPONENT_SCHEMA),
+)
 
 
 @coroutine_with_priority(CoroPriority.STATUS)

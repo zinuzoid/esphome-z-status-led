@@ -41,9 +41,9 @@ HEARTBEAT_SCHEMA = cv.All(
 
 
 def heartbeat_schema(value):
-    # `heartbeat: true` uses the defaults, `heartbeat: false` keeps the LED off when healthy.
-    if not isinstance(value, dict):
-        value = {} if cv.boolean(value) else {CONF_COUNT: 0}
+    # An empty `heartbeat:` uses the defaults.
+    if value is None:
+        value = {}
     return HEARTBEAT_SCHEMA(value)
 
 CONFIG_SCHEMA = cv.Schema(
